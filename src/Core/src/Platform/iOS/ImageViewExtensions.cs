@@ -10,13 +10,8 @@ namespace Microsoft.Maui.Platform
 	{
 		public static void Clear(this UIImageView imageView)
 		{
-			// stop the animation
-			if (imageView is MauiImageView mauiImageView)
-			{
-				mauiImageView.StopAnimating();
-				mauiImageView.Animation = null;
-			}
-
+			// stop the animation if there is one
+			imageView.StopAnimating();
 			imageView.Image = null;
 		}
 
@@ -28,14 +23,22 @@ namespace Microsoft.Maui.Platform
 
 		public static async Task UpdateIsAnimationPlaying(this UIImageView imageView, IImageSourcePart image)
 		{
-
 			if (imageView is MauiImageView mauiImageView)
-			{				
+			{
+				// IsAnimationPlaying set to true in the incoming imagesource
+				// indicates it's an animated image.
 				if (image.IsAnimationPlaying)
 				{
+					if (mauiImageView.IsAnimating)
+					{
+						mauiImageView.StopAnimating();
+					}
+					
 					if (!imageView.IsAnimating)
 					{
-						mauiImageView.Animation = await ImageAnimationHelper.CreateAnimationFromImageSource(image.Source);
+						var animatedImage = await ImageAnimationHelper.CreateAnimationFromImageSource(image.Source);
+						mauiImageView.AnimationImages = animatedImage.GetValuesAs<UIImage>();
+						mauiImageView.AnimationDuration = animatedImage.Duration;
 						mauiImageView.StartAnimating();
 					}
 				}

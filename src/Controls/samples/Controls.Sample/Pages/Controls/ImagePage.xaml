@@ -66,9 +66,16 @@
                 <Label
                     Text="Animated GIF"
                     Style="{StaticResource Headline}"/>
-                <Image 
+                <Image
+                    x:Name="AnimatedGifImage"
                     Source="animated_heart.gif"
                     IsAnimationPlaying="True" />
+                <Button
+                    Text="Start/Stop"
+                    Clicked="AnimationStartStop_Clicked"/>
+                <Button
+                    Text="Use Online Source"
+                    Clicked="UseOnlineSource_Clicked"/>
             </VerticalStackLayout>
         </ScrollView>
     </views:BasePage.Content>

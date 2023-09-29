@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using CoreAnimation;
 using CoreGraphics;
-using Microsoft.Maui.Graphics;
 using UIKit;
 
 namespace Microsoft.Maui.Platform
@@ -10,7 +8,7 @@ namespace Microsoft.Maui.Platform
 	public class MauiImageView : UIImageView, IUIViewLifeCycleEvents
 	{
 		bool _isDisposed;
-		const string AnimationLayerName = "MauiUIImageViewAnimation";
+		//const string AnimationLayerName = "MauiUIImageViewAnimation";
 		WeakReference<MauiCAKeyFrameAnimation>? _animation;
 
 		readonly WeakReference<IImageHandler>? _handler;
@@ -64,77 +62,6 @@ namespace Microsoft.Maui.Platform
 			}
 		}
 
-		public override CGSize SizeThatFits(CGSize size)
-		{
-			if (Image == null && Animation != null)
-			{
-				return new CGSize(Animation.Width, Animation.Height);
-			}
-
-			return base.SizeThatFits(size);
-		}
-
-		public MauiCAKeyFrameAnimation? Animation
-		{
-			get { return _animation?.GetTargetOrDefault(); }
-			set
-			{
-				if (_animation is not null && _animation.TryGetTarget(out var animation))
-				{
-					Layer.RemoveAnimation(AnimationLayerName);
-					animation.Dispose();
-				}
-
-				_animation = value is null ? null : new WeakReference<MauiCAKeyFrameAnimation>(value);
-
-				if (_animation is not null && _animation.TryGetTarget(out var newAnimation))
-				{
-					Layer.AddAnimation(newAnimation, AnimationLayerName);
-				}
-
-				Layer.SetNeedsDisplay();
-			}
-		}
-
-		public override bool IsAnimating
-		{
-			get
-			{
-				if (_animation is not null)
-					return Layer.Speed != 0.0f;
-				else
-					return base.IsAnimating;
-			}
-		}
-
-		public override void StartAnimating()
-		{
-			if (_animation is not null && _animation.TryGetTarget(out var animation) && Layer.Speed == 0.0f)
-			{
-				Layer.RemoveAnimation(AnimationLayerName);
-				Layer.AddAnimation(animation, AnimationLayerName);
-				Layer.Speed = 1.0f;
-			}
-			else
-			{
-				base.StartAnimating();
-			}
-		}
-
-		public override void StopAnimating()
-		{
-			if (_animation is not null && _animation.TryGetTarget(out var animation) && Layer.Speed != 0.0f)
-			{
-				Layer.RemoveAnimation(AnimationLayerName);
-				Layer.AddAnimation(animation, AnimationLayerName);
-				Layer.Speed = 0.0f;
-			}
-			else
-			{
-				base.StopAnimating();
-			}
-		}
-
 		protected override void Dispose(bool disposing)
 		{
 			if (_isDisposed)
@@ -144,7 +71,7 @@ namespace Microsoft.Maui.Platform
 
 			if (disposing && _animation?.TryGetTarget(out var animation) != null)
 			{
-				Layer.RemoveAnimation(AnimationLayerName);
+				AnimationImages = null;
 				animation?.Dispose();
 				_animation = null;
 			}

@@ -7,6 +7,7 @@ using CoreAnimation;
 using Foundation;
 using System.Threading.Tasks;
 using System.Threading;
+using UIKit;
 
 namespace Microsoft.Maui;
 
@@ -49,11 +50,15 @@ internal class ImageAnimationHelper
 			using var gifImageProperties = imageProperties?.Dictionary[ImageIO.CGImageProperties.GIFDictionary];
 			using var unclampedDelayTimeValue = gifImageProperties?.ValueForKey(ImageIO.CGImageProperties.GIFUnclampedDelayTime);
 			using var delayTimeValue = gifImageProperties?.ValueForKey(ImageIO.CGImageProperties.GIFDelayTime);
-			
-			if (unclampedDelayTimeValue != null)
-				_ = double.TryParse(unclampedDelayTimeValue.ToString(), out delayTime);
-			else if (delayTimeValue != null)
-				_ = double.TryParse(delayTimeValue.ToString(), out delayTime);
+
+			if (unclampedDelayTimeValue is NSNumber unclampedDelay)
+			{
+				delayTime = unclampedDelay.DoubleValue;
+			}
+			else if (delayTimeValue is NSNumber delay)
+			{
+				delayTime = delay.DoubleValue;
+			}
 
 			// Frame delay compability adjustment.
 			if (delayTime <= 0.02f)
@@ -68,13 +73,13 @@ internal class ImageAnimationHelper
 				_keyFrames[index]?.Dispose();
 				_keyFrames[index] = null!;
 
-				_keyFrames[index] = NSObject.FromObject(image);
+				_keyFrames[index] = UIImage.FromImage(image);
 				_delayTimes[index] = delayTime;
 				_totalAnimationTime += delayTime;
 			}
 		}
 
-		public MauiCAKeyFrameAnimation CreateKeyFrameAnimation()
+		public MauiCAKeyFrameAnimation CreateKeyFrameAnimation(CGImageSource imageSource)
 		{
 			if (_totalAnimationTime <= 0.0f)
 				return null;
@@ -130,7 +135,6 @@ internal class ImageAnimationHelper
 
 	public static MauiCAKeyFrameAnimation CreateAnimationFromCGImageSource(CGImageSource imageSource)
 	{
-		MauiCAKeyFrameAnimation animation = null;
 		float repeatCount = float.MaxValue;
 		var imageCount = imageSource.ImageCount;
 
@@ -158,7 +162,8 @@ internal class ImageAnimationHelper
 			imageData.AddFrameData(i, imageSource);
 		}
 
-		animation = imageData.CreateKeyFrameAnimation();
+		MauiCAKeyFrameAnimation animation = imageData.CreateKeyFrameAnimation(imageSource);
+
 		if (animation != null)
 		{
 			animation.RemovedOnCompletion = false;

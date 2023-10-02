@@ -7,9 +7,6 @@ namespace Microsoft.Maui.Platform
 {
 	public class MauiImageView : UIImageView, IUIViewLifeCycleEvents
 	{
-		bool _isDisposed;
-		WeakReference<MauiCAKeyFrameAnimation>? _animation;
-
 		readonly WeakReference<IImageHandler>? _handler;
 
 		public MauiImageView(IImageHandler handler) => _handler = new(handler);
@@ -47,35 +44,6 @@ namespace Microsoft.Maui.Platform
 		{
 			add { }
 			remove { }
-		}
-
-		public override UIImage? Image
-		{
-			get
-			{
-				return base.Image;
-			}
-			set
-			{
-				base.Image = value;
-			}
-		}
-
-		protected override void Dispose(bool disposing)
-		{
-			if (_isDisposed)
-				return;
-
-			_isDisposed = true;
-
-			if (disposing && _animation?.TryGetTarget(out var animation) != null)
-			{
-				AnimationImages = null;
-				animation?.Dispose();
-				_animation = null;
-			}
-
-			base.Dispose(disposing);
 		}
 	}
 }

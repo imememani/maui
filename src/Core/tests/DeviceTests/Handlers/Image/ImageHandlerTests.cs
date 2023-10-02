@@ -112,7 +112,7 @@ namespace Microsoft.Maui.DeviceTests
 
 		[Theory(
 #if __ANDROID__
-			Skip = "Animated GIFs are not yet supported on iOS. Test failing on ANDROID"
+			Skip = "Test failing on ANDROID"
 #endif
 		)]
 		[InlineData("animated_heart.gif", true)]

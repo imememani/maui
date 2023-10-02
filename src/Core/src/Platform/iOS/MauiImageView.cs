@@ -8,7 +8,6 @@ namespace Microsoft.Maui.Platform
 	public class MauiImageView : UIImageView, IUIViewLifeCycleEvents
 	{
 		bool _isDisposed;
-		//const string AnimationLayerName = "MauiUIImageViewAnimation";
 		WeakReference<MauiCAKeyFrameAnimation>? _animation;
 
 		readonly WeakReference<IImageHandler>? _handler;

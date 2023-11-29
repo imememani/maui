@@ -1,6 +1,5 @@
 #nullable disable
 using System;
-using System.Runtime.CompilerServices;
 using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Graphics;
 using UIKit;
@@ -19,26 +18,6 @@ namespace Microsoft.Maui.Controls
 		}
 
 		public static void MapText(LabelHandler handler, Label label) => MapText((ILabelHandler)handler, label);
-
-		public static void MapTextDecorations(ILabelHandler handler, Label label) =>
-			MapTextDecorations(handler, label, (h, v) => LabelHandler.MapTextDecorations(handler, label));
-
-		public static void MapCharacterSpacing(ILabelHandler handler, Label label) =>
-			MapCharacterSpacing(handler, label, (h, v) => LabelHandler.MapCharacterSpacing(handler, label));
-
-		public static void MapLineHeight(ILabelHandler handler, Label label) =>
-			MapLineHeight(handler, label, (h, v) => LabelHandler.MapLineHeight(handler, label));
-
-		public static void MapFont(ILabelHandler handler, Label label) =>
-			MapFont(handler, label, (h, v) => LabelHandler.MapFont(handler, label));
-
-		public static void MapTextColor(ILabelHandler handler, Label label) =>
-			MapTextColor(handler, label, (h, v) => LabelHandler.MapTextColor(handler, label));
-
-		public static void MapTextType(ILabelHandler handler, Label label)
-		{
-			handler.UpdateValue(nameof(ILabel.Text));
-		}
 
 		public static void MapText(ILabelHandler handler, Label label)
 		{

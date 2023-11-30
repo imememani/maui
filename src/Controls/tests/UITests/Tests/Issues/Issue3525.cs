@@ -19,6 +19,11 @@ public class Issue3525 : _IssuesUITest
 	[Test]
 	public void SpanRegionClicking()
 	{
+		if (Device == TestDevice.Mac)
+		{
+			Assert.Ignore("Click (x, y) pointer type mouse is not implemented.");
+		}
+
 		if (Device == TestDevice.Windows)
 		{
 			Assert.Ignore("This test is failing on Windows because the feature is not yet implemented: https://github.com/dotnet/maui/pull/17731");

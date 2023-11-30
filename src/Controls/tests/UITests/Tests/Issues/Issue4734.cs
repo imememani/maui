@@ -15,6 +15,11 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		[Test]
 		public void Issue4734Test()
 		{
+			if (Device == TestDevice.Mac)
+			{
+				Assert.Ignore("Click (x, y) pointer type mouse is not implemented.");
+			}
+
 			if (Device == TestDevice.Windows)
 			{
 				Assert.Ignore("This test is failing, likely due to product issue");

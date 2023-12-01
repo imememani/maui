@@ -15,12 +15,12 @@ internal class ImageAnimationHelper
 {
 	class ImageDataHelper : IDisposable
 	{
-		readonly NSObject[] _keyFrames = null;
-		readonly NSNumber[] _keyTimes = null;
-		readonly double[] _delayTimes = null;
-		readonly int _imageCount = 0;
-		double _totalAnimationTime = 0.0f;
-		bool _disposed = false;
+		readonly NSObject[] _keyFrames;
+		readonly NSNumber[] _keyTimes;
+		readonly double[] _delayTimes;
+		readonly int _imageCount;
+		double _totalAnimationTime;
+		bool _disposed;
 
 		public ImageDataHelper(nint imageCount)
 		{

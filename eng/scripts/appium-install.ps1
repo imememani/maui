@@ -50,13 +50,48 @@ Write-Output  "Welcome to the Appium installer"
 Write-Output  "Node version"
 node -v
 
+# # Capture global NPM modules folder in a variable
+# $nodeModulesRoot=npm root -g
+
+# # Get all files in the subfolder matching the pattern for either appium or .appium-????????
+# $appiumPattern = ".appium(-[0-9a-zA-Z]{8})|appium$"
+
+# # Get all subfolders in the specified path matching the pattern, including hidden folders
+# $subfolders = Get-ChildItem -Path $nodeModulesRoot -Directory -Force | Where-Object { $_.Name -match $appiumPattern }
+
+# # One or more subfolders found, let's remove them to be sure
+# if ($subfolders.Count -gt 0) {
+#     Write-Host "$nodeModulesRoot has subfolders matching '$appiumPattern', cleaning up existing appium modules..."
+
+#     #Get-ChildItem -Path $nodeModulesRoot -Directory -Filter ".appium-????????" -Force | ForEach-Object { Remove-Item -Recurse $_.FullName -Force }
+#     #Remove-Item -Recurse $nodeModulesRoot/appium
+#     npm rm appium
+# }
+
 Write-Output  "Installing appium $appiumVersion"
-npm install -g appium@$appiumVersion
+npm install appium@$appiumVersion
+
 write-Output  "Installed appium"
 appium -v
 
+# # Get all files in the subfolder matching the pattern for either appium-doctor or .appium-doctor-????????
+# $appiumDoctorPattern = ".appium-doctor(-[0-9a-zA-Z]{8})|appium-doctor$"
+
+# # Get all subfolders in the specified path matching the pattern, including hidden folders
+# $subfolders = Get-ChildItem -Path $nodeModulesRoot -Directory -Force | Where-Object { $_.Name -match $appiumDoctorPattern }
+
+# # One or more subfolders found, let's remove them to be sure
+# if ($subfolders.Count -gt 0) {
+#     Write-Host "$nodeModulesRoot has subfolders matching '$appiumDoctorPattern', cleaning up existing appium-doctor modules..."
+
+#     #Get-ChildItem -Path $nodeModulesRoot -Directory -Filter ".appium-doctor-????????" -Force | ForEach-Object { Remove-Item -Recurse $_.FullName -Force }
+#     #Remove-Item -Recurse $nodeModulesRoot/appium-doctor
+#     npm rm appium-doctor
+# }
+
 Write-Output  "Installing appium doctor"
-npm install -g appium-doctor
+npm install appium-doctor
+
 Write-Output  "Installed appium doctor"
 
 $existingDrivers = appium driver list --installed --json  | ConvertFrom-Json

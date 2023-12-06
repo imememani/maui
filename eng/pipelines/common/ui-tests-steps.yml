@@ -55,7 +55,7 @@ steps:
     condition: ne(startsWith(variables['Agent.Name'], 'XAMBOT'), true)
 
   - pwsh: |
-      ls /Users/builder/azdo/_work/_tool/node/20.3.1/x64/lib/node_modules
+      ls -al /Users/builder/azdo/_work/_tool/node/20.3.1/x64/lib/node_modules
     displayName: Debugging stuff
 
   - pwsh: ./build.ps1 --target=dotnet --configuration="${{ parameters.configuration }}" --verbosity=diagnostic

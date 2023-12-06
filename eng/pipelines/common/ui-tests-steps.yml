@@ -49,6 +49,7 @@ steps:
 
   - pwsh: npm install appium@2.1.1 -g
     displayName: Install Appium
+    condition: ne(startsWith(variables['Agent.Name'], 'XAMBOT'), true)
     
   - pwsh: |
       appium driver install uiautomator2

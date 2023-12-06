@@ -54,11 +54,6 @@ steps:
     displayName: Install Appium Drivers
     condition: ne(startsWith(variables['Agent.Name'], 'XAMBOT'), true)
 
-  # - pwsh: ./eng/scripts/appium-install.ps1
-  #   displayName: "Install Appium"
-  #   continueOnError: false
-  #   retryCountOnTaskFailure: 1
-
   - pwsh: ./build.ps1 --target=dotnet --configuration="${{ parameters.configuration }}" --verbosity=diagnostic
     displayName: 'Install .NET'
     retryCountOnTaskFailure: 2
